@@ -1,12 +1,7 @@
-CREATE TABLE IF NOT EXISTS countries (
-  code CHAR(2) PRIMARY KEY,
-  name_ar TEXT NOT NULL,
-  name_en TEXT NOT NULL,
-  continent TEXT NOT NULL,
-  bank_name TEXT, bank_website TEXT, bank_facebook TEXT,
-  bank_status TEXT NOT NULL DEFAULT 'unavailable'
-    CHECK (bank_status IN ('verified','partial','review','unavailable')),
-  wallet_name TEXT, wallet_website TEXT, wallet_facebook TEXT,
-  wallet_status TEXT NOT NULL DEFAULT 'unavailable'
-    CHECK (wallet_status IN ('verified','partial','review','unavailable'))
-);
+CREATE TABLE public.countries (
+  code CHAR(2) PRIMARY KEY, name_ar TEXT NOT NULL, name_en TEXT NOT NULL, continent TEXT NOT NULL,
+  bank JSONB NOT NULL, wallet JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT now());
+GRANT SELECT ON public.countries TO anon, authenticated;
+GRANT ALL ON public.countries TO service_role;
+ALTER TABLE public.countries ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public read countries" ON public.countries FOR SELECT TO anon, authenticated USING (true);

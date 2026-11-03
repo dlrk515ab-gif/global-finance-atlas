@@ -53,3 +53,23 @@ export const COUNTRIES: Country[] = RAW.map(([code, nameAr, nameEn, continent]) 
 
 export const flag = (code: string) =>
   String.fromCodePoint(...[...code].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
+
+// تحويل سجل قاعدة البيانات إلى نموذج الدولة مع ملء الحقول الناقصة.
+export type CountryRow = { code: string; name_ar: string; name_en: string; continent: string; bank: unknown; wallet: unknown };
+const fill = (raw: unknown): Entity => {
+  const r = (raw ?? {}) as Partial<Entity>;
+  const base = empty();
+  const ms: Status = r.name ? "review" : "unavailable";
+  return {
+    ...base, ...r,
+    social: { ...base.social, ...(r.social ?? {}) },
+    sources: r.sources ?? [],
+    status: r.status ?? "unavailable",
+    signup: { ...Object.fromEntries(SIGNUP_METHODS.map((m) => [m, ms])), ...(r.signup ?? {}) },
+    login: { ...Object.fromEntries(LOGIN_METHODS.map((m) => [m, ms])), ...(r.login ?? {}) },
+  };
+};
+export const fromRow = (r: CountryRow): Country => ({
+  code: r.code.trim(), nameAr: r.name_ar, nameEn: r.name_en, continent: r.continent as Continent,
+  bank: fill(r.bank), wallet: fill(r.wallet),
+});
