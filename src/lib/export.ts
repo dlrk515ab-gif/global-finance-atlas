@@ -1,4 +1,4 @@
-import { COUNTRIES, type Country } from "@/data/countries";
+import type { Country } from "@/data/countries";
 
 function download(content: string, filename: string, type: string) {
   const url = URL.createObjectURL(new Blob([content], { type }));
@@ -14,9 +14,9 @@ const flat = (c: Country) => ({
   wallet_name: c.wallet.name ?? "", wallet_website: c.wallet.website ?? "", wallet_facebook: c.wallet.facebook ?? "", wallet_status: c.wallet.status,
 });
 
-export const exportJSON = () => download(JSON.stringify(COUNTRIES, null, 2), "countries.json", "application/json");
+export const exportJSON = (COUNTRIES: Country[]) => download(JSON.stringify(COUNTRIES, null, 2), "countries.json", "application/json");
 
-export function exportCSV() {
+export function exportCSV(COUNTRIES: Country[]) {
   const rows = COUNTRIES.map(flat);
   const head = Object.keys(rows[0] ?? {});
   const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
@@ -24,7 +24,7 @@ export function exportCSV() {
   download(csv, "countries.csv", "text/csv;charset=utf-8");
 }
 
-export function exportSQL() {
+export function exportSQL(COUNTRIES: Country[]) {
   const q = (v: string) => (v ? `'${v.replace(/'/g, "''")}'` : "NULL");
   const schema = `CREATE TABLE IF NOT EXISTS countries (
   code CHAR(2) PRIMARY KEY, name_ar TEXT NOT NULL, name_en TEXT NOT NULL, continent TEXT NOT NULL,
