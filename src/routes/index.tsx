@@ -168,7 +168,7 @@ function EntityBlock({ title, e }: { title: string; e: Entity }) {
         {([["فتح الحساب لأول مرة", SIGNUP_METHODS, e.signup], ["تسجيل الدخول اليومي", LOGIN_METHODS, e.login]] as const).map(([t, ms, map]) => (
           <div key={t} className="rounded-xl border border-border p-3">
             <div className="mb-2 text-sm font-medium">{t}</div>
-            {ms.map((m) => (<div key={m} className="flex justify-between py-1 text-sm"><span>{m}</span><Badge s={map[m]} /></div>))}
+            {ms.map((m) => (<div key={m} className="flex justify-between py-1 text-sm"><span>{m}</span><Badge s={map[m] ?? "unavailable"} /></div>))}
           </div>
         ))}
       </div>
