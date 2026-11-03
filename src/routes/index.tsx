@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  COUNTRIES, CONTINENTS, STATUS_LABEL, SIGNUP_METHODS, LOGIN_METHODS, flag,
+  CONTINENTS, STATUS_LABEL, SIGNUP_METHODS, LOGIN_METHODS, flag,
   type Country, type Entity, type Status,
 } from "@/data/countries";
 import { exportCSV, exportJSON, exportSQL } from "@/lib/export";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { countriesQuery } from "@/lib/countries-query";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,6 +23,7 @@ export const Route = createFileRoute("/")({
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" },
     ],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(countriesQuery),
   component: Index,
 });
 
@@ -47,10 +50,13 @@ function Index() {
   const [q, setQ] = useState("");
   const [cont, setCont] = useState<string>("all");
   const [sel, setSel] = useState<Country | null>(null);
+  const [only, setOnly] = useState<"all" | "filled" | "empty">("all");
+  const { data: COUNTRIES } = useSuspenseQuery(countriesQuery);
 
   const list = useMemo(() => COUNTRIES.filter((c) =>
     (cont === "all" || c.continent === cont) &&
-    (c.nameAr.includes(q) || c.nameEn.toLowerCase().includes(q.toLowerCase()))), [q, cont]);
+    (only === "all" || (only === "filled") === !!(c.bank.name || c.wallet.name)) &&
+    (c.nameAr.includes(q) || (c.bank.name ?? "").toLowerCase().includes(q.toLowerCase()) || (c.wallet.name ?? "").toLowerCase().includes(q.toLowerCase()) || c.nameEn.toLowerCase().includes(q.toLowerCase()))), [q, cont, only, COUNTRIES]);
 
   const count = (k: "bank" | "wallet", s: Status) => COUNTRIES.filter((c) => c[k].status === s).length;
 
@@ -61,13 +67,13 @@ function Index() {
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="text-glow text-4xl font-bold md:text-5xl">أطلس البنوك والمحافظ الرقمية</h1>
-            <p className="mt-2 text-muted-foreground">سجل مستقل لكل دولة. الحقول تبقى فارغة حتى تُوثَّق من مصادر رسمية.</p>
+            <p className="mt-2 text-muted-foreground">سجل مستقل لكل دولة. «موثّق جزئياً» = الاسم والموقع الرسمي مؤكَّدان، ودليل المقارنة وطرق الدخول قيد المراجعة.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <a href="/downloads/project-source.zip" download="project-source.zip"
               className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground transition hover:opacity-90">تحميل المشروع كاملاً</a>
             {[["CSV", exportCSV], ["JSON", exportJSON], ["SQL", exportSQL]].map(([l, f]) => (
-              <button key={l as string} onClick={f as () => void}
+              <button key={l as string} onClick={() => (f as (c: Country[]) => void)(COUNTRIES)}
                 className="glass rounded-lg px-3 py-2 text-sm transition hover:border-primary">تصدير {l as string}</button>
             ))}
           </div>
@@ -77,9 +83,9 @@ function Index() {
           <h2 className="mb-3 text-lg font-semibold">لوحة الإحصائيات</h2>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             <Stat label="إجمالي الدول" value={COUNTRIES.length} />
-            <Stat label="بنوك موثّقة" value={count("bank", "verified")} />
-            <Stat label="محافظ موثّقة" value={count("wallet", "verified")} />
-            <Stat label="سجلات تحتاج مراجعة" value={count("bank", "review") + count("wallet", "review")} />
+            <Stat label="بنوك/محافظ موثّقة" value={count("bank", "verified") + count("wallet", "verified")} />
+            <Stat label="بنوك/محافظ موثّقة جزئياً" value={count("bank", "partial") + count("wallet", "partial")} />
+            <Stat label="دول بها بيانات" value={COUNTRIES.filter((c) => c.bank.name || c.wallet.name).length} />
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-6">
             {CONTINENTS.map((c) => (
@@ -102,13 +108,19 @@ function Index() {
 
         <section className="mt-8">
           <div className="flex flex-wrap gap-2">
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن دولة…"
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن دولة أو بنك أو محفظة…" aria-label="بحث"
               className="glass min-w-60 flex-1 rounded-lg px-3 py-2 outline-none focus:border-primary" />
             {["all", ...CONTINENTS].map((c) => (
               <button key={c} onClick={() => setCont(c)}
                 className={`rounded-lg px-3 py-2 text-sm transition ${cont === c ? "bg-primary text-primary-foreground" : "glass"}`}>
                 {c === "all" ? "الكل" : c}
               </button>
+            ))}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {([["all", "كل السجلات"], ["filled", "بها بيانات"], ["empty", "بدون بيانات"]] as const).map(([v, l]) => (
+              <button key={v} onClick={() => setOnly(v)}
+                className={`rounded-lg px-3 py-1.5 text-xs transition ${only === v ? "bg-accent text-accent-foreground" : "glass"}`}>{l}</button>
             ))}
           </div>
           <p className="mt-2 text-sm text-muted-foreground">{list.length} دولة</p>
@@ -163,6 +175,7 @@ function EntityBlock({ title, e }: { title: string; e: Entity }) {
       {e.logo && <img src={e.logo} alt={e.name ?? ""} className="mb-2 h-10" />}
       <Field k="الاسم" v={e.name} /><Field k="الاسم الرسمي" v={e.officialName} />
       <Field k="الموقع الرسمي" v={e.website} link /><Field k="Facebook" v={e.facebook} link />
+      {e.ownerType && <Field k="نوع الجهة" v={{ bank: "بنك", telecom: "شركة اتصالات", independent: "مستقلة" }[e.ownerType]} />}
       <Field k="Instagram" v={e.social.instagram} link /><Field k="X" v={e.social.x} link />
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         {([["فتح الحساب لأول مرة", SIGNUP_METHODS, e.signup], ["تسجيل الدخول اليومي", LOGIN_METHODS, e.login]] as const).map(([t, ms, map]) => (
@@ -172,7 +185,7 @@ function EntityBlock({ title, e }: { title: string; e: Entity }) {
           </div>
         ))}
       </div>
-      {e.sources.length > 0 && <div className="mt-2 text-xs text-muted-foreground">المصادر: {e.sources.join(" · ")}</div>}
+      {e.sources.length > 0 && <div className="mt-2 text-xs text-muted-foreground">المصادر: {e.sources.map((u) => <a key={u} href={u} target="_blank" rel="noreferrer" className="ms-2 text-primary">{u}</a>)}</div>}
     </section>
   );
 }
