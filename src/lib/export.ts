@@ -32,6 +32,6 @@ export function exportSQL() {
   wallet_name TEXT, wallet_website TEXT, wallet_facebook TEXT, wallet_status TEXT NOT NULL
 );\n`;
   const inserts = COUNTRIES.map(flat).map((r) =>
-    `INSERT INTO countries VALUES (${Object.entries(r).map(([k, v]) => (k.endsWith("status") ? `'${v}'` : q(v))).join(", ")});`).join("\n");
+    `INSERT INTO countries VALUES (${Object.entries(r).map(([k, v]) => (k.endsWith("status") ? `'${v}'` : q(String(v ?? "")))).join(", ")});`).join("\n");
   download(schema + inserts + "\n", "countries.sql", "application/sql");
 }
