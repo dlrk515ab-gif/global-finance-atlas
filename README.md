@@ -1,14 +1,118 @@
-# Welcome to your Lovable project
+# Global Finance Atlas
+
+1. تغطية الدول
+
+أضف 192 دولة مع تصنيفها حسب القارات.
+
+أنشئ سجلاً مستقلاً لكل دولة.
+
+لا تترك الدول مجرد أسماء؛ جهّز حقولها لاستقبال البيانات المصرفية والمحافظ.
+
+2. بيانات البنوك
+
+لكل دولة، اجمع وسجّل:
+
+البنك المحلي الأكثر انتشاراً وحضوراً.
+
+الاسم الرسمي والشعار.
+
+الموقع الرسمي.
+
+صفحة Facebook الرسمية.
+
+3. بيانات المحافظ الرقمية
+
+حدّد أكبر محفظة رقمية محلية انتشاراً في كل دولة.
+
+افحص أولاً إن كان البنك المختار يمتلك محفظة خاصة به.
+
+إذا لم يمتلك، ابحث عن أكبر محفظة محلية مستقلة أو تابعة لشركة اتصالات.
+
+لا تعتبر تطبيق البنك محفظة مستقلة إلا إذا كان يقدم خدمات محفظة رقمية فعلية.
+
+ وصفحات التواصل الاجتماعي.
+
+4. طرق فتح الحساب وتسجيل الدخول
+
+اعرض لكل تطبيق قسمين منفصلين:
+
+فتح الحساب لأول مرة:
+
+رقم الهاتف.
+
+رقم الهوية الوطنية.
+
+البريد الإلكتروني.
+
+التحقق عبر SMS أو OTP.
+
+إنشاء PIN أو كلمة مرور.
+
+التحقق من الهوية أو الوجه، إن كان مطلوباً.
+
+تسجيل الدخول اليومي:
+
+رقم الهاتف وPIN.
+
+رقم الهوية وكلمة المرور.
+
+اسم المستخدم وكلمة المرور.
+
+OTP.
+
+البصمة أو التعرف على الوجه.
+
+لا تفترض أن طريقة فتح الحساب هي نفسها طريقة تسجيل الدخول. اعتمد على تعليمات التطبيق ومصادره الرسمية فقط.
+
+استخدم الحالات التالية:
+موثّق، موثّق جزئياً، يحتاج مراجعة، غير متوفر.
+
+6. لوحة الإحصائيات
+
+
+
+7. قواعد مهمة
+
+لا تختلق أي بنك أو محفظة أو رابط أو عدد متابعين.
+
+لا تضع تطبيقاً عالمياً مكان محفظة محلية.
+
+لا تعتبر الشهرة العالمية دليلاً على الانتشار المحلي.
+
+لا تعرض أي بنك على أنه الأكبر دون وجود دليل مقارن.
+
+إذا لم تجد بيانات موثوقة، اترك الحقل غير مكتمل بدلاً من تخمين الإجابة.
+
+لا تستخدم بيانات تجريبية على أنها بيانات حقيقية.
+
+خلفية الموقع سواد ورسوم متحركة 2026 
+9. تحميل المشروع كاملاً
+
+إضافة زر باسم تحميل المشروع كاملاً لتنزيل جميع ملفات المشروع بصيغة ZIP.
+
+تضمين الكود المصدري والواجهات والخلفية وملفات قاعدة البيانات والإعدادات.
+
+جعل الملفات قابلة للتعديل والتطوير خارج Lovable.
+
+توفير تعليمات تشغيل وتثبيت المشروع.
+
+دعم نشر المشروع على منصات أخرى مثل Vercel وNetlify أو أي استضافة متوافقة.
+
+توفير إمكانية تصدير البيانات بصيغ CSV وJSON وSQL.
+
+عدم تضمين كلمات المرور أو مفاتيح API السرية في الملف.
+
+التأكد من أن النسخة المحمّلة كاملة وقابلة للتشغيل والتعديل والنشر بشكل مستقل عن Lovable.
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/09099201-3084-423f-b89b-2f3fe0663076).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +124,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
