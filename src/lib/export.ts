@@ -18,8 +18,8 @@ export const exportJSON = () => download(JSON.stringify(COUNTRIES, null, 2), "co
 
 export function exportCSV() {
   const rows = COUNTRIES.map(flat);
-  const head = Object.keys(rows[0]);
-  const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+  const head = Object.keys(rows[0] ?? {});
+  const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const csv = "\uFEFF" + [head.join(","), ...rows.map((r) => head.map((h) => esc((r as Record<string, string>)[h])).join(","))].join("\n");
   download(csv, "countries.csv", "text/csv;charset=utf-8");
 }
