@@ -2,7 +2,7 @@
 // بيانات البنوك والمحافظ فارغة عمداً حتى يتم التحقق منها من مصادر رسمية.
 export type Status = "verified" | "partial" | "review" | "unavailable";
 export const STATUS_LABEL: Record<Status, string> = {
-  verified: "موثّق",
+  verified: "موثّق رسمياً",
   partial: "موثّق جزئياً",
   review: "يحتاج مراجعة",
   unavailable: "غير متوفر",
@@ -14,6 +14,9 @@ export const SIGNUP_METHODS = ["رقم الهاتف", "رقم الهوية ال�
 export const LOGIN_METHODS = ["رقم الهاتف + PIN", "رقم الهوية + كلمة المرور", "اسم المستخدم + كلمة المرور", "OTP", "البصمة/التعرف على الوجه"] as const;
 
 export type MethodMap = Record<string, Status>;
+/** دليل كل طريقة: رابط المصدر الرسمي والنص المقتبس منه حرفياً */
+export type Evidence = { url: string; quote: string };
+export type EvidenceMap = Record<string, Evidence>;
 export interface Entity {
   name: string | null;
   officialName: string | null;
@@ -29,6 +32,12 @@ export interface Entity {
   sources: string[];
   signup: MethodMap;
   login: MethodMap;
+  signupEvidence: EvidenceMap;
+  loginEvidence: EvidenceMap;
+  /** تاريخ آخر فحص لطرق التسجيل والدخول (YYYY-MM-DD) */
+  methodsCheckedAt: string | null;
+  /** المصادر الرسمية التي فُحصت لطرق التسجيل والدخول */
+  methodsSources: string[];
 }
 export interface Country { code: string; nameAr: string; nameEn: string; continent: Continent; bank: Entity; wallet: Entity }
 
@@ -39,6 +48,7 @@ const empty = (): Entity => ({
   status: "unavailable", sources: [],
   signup: Object.fromEntries(SIGNUP_METHODS.map((m) => [m, "unavailable"])),
   login: Object.fromEntries(LOGIN_METHODS.map((m) => [m, "unavailable"])),
+  signupEvidence: {}, loginEvidence: {}, methodsCheckedAt: null, methodsSources: [],
 });
 
 const AF = "أفريقيا", AS = "آسيا", EU = "أوروبا", NA = "أمريكا الشمالية", SA = "أمريكا الجنوبية", OC = "أوقيانوسيا";
@@ -73,6 +83,10 @@ const fill = (raw: unknown): Entity => {
     status: r.status ?? "unavailable",
     signup: { ...Object.fromEntries(SIGNUP_METHODS.map((m) => [m, ms])), ...(r.signup ?? {}) },
     login: { ...Object.fromEntries(LOGIN_METHODS.map((m) => [m, ms])), ...(r.login ?? {}) },
+    signupEvidence: r.signupEvidence ?? {},
+    loginEvidence: r.loginEvidence ?? {},
+    methodsCheckedAt: r.methodsCheckedAt ?? null,
+    methodsSources: r.methodsSources ?? [],
   };
 };
 export const fromRow = (r: CountryRow): Country => ({

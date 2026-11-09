@@ -8,12 +8,17 @@ function download(content: string, filename: string, type: string) {
   setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }
 
+// ملخص طرق التسجيل/الدخول: "الطريقة=الحالة" مفصولة بـ " | "
+const methods = (m: Record<string, string>) => Object.entries(m).map(([k, v]) => `${k}=${v}`).join(" | ");
+
 const flat = (c: Country) => ({
   code: c.code, name_ar: c.nameAr, name_en: c.nameEn, continent: c.continent,
   bank_name: c.bank.name ?? "", bank_website: c.bank.website ?? "", bank_facebook: c.bank.facebook ?? "",
   bank_android: c.bank.apps.android ?? "", bank_ios: c.bank.apps.ios ?? "", bank_sources: c.bank.sources.join(" "), bank_status: c.bank.status,
+  bank_signup: methods(c.bank.signup), bank_login: methods(c.bank.login), bank_methods_sources: c.bank.methodsSources.join(" "),
   wallet_name: c.wallet.name ?? "", wallet_website: c.wallet.website ?? "", wallet_facebook: c.wallet.facebook ?? "",
   wallet_android: c.wallet.apps.android ?? "", wallet_ios: c.wallet.apps.ios ?? "", wallet_sources: c.wallet.sources.join(" "), wallet_status: c.wallet.status,
+  wallet_signup: methods(c.wallet.signup), wallet_login: methods(c.wallet.login), wallet_methods_sources: c.wallet.methodsSources.join(" "),
 });
 
 export const exportJSON = (COUNTRIES: Country[]) => download(JSON.stringify(COUNTRIES, null, 2), "countries.json", "application/json");
@@ -31,7 +36,9 @@ export function exportSQL(COUNTRIES: Country[]) {
   const schema = `CREATE TABLE IF NOT EXISTS countries (
   code CHAR(2) PRIMARY KEY, name_ar TEXT NOT NULL, name_en TEXT NOT NULL, continent TEXT NOT NULL,
   bank_name TEXT, bank_website TEXT, bank_facebook TEXT, bank_android TEXT, bank_ios TEXT, bank_sources TEXT, bank_status TEXT NOT NULL,
-  wallet_name TEXT, wallet_website TEXT, wallet_facebook TEXT, wallet_android TEXT, wallet_ios TEXT, wallet_sources TEXT, wallet_status TEXT NOT NULL
+  bank_signup TEXT, bank_login TEXT, bank_methods_sources TEXT,
+  wallet_name TEXT, wallet_website TEXT, wallet_facebook TEXT, wallet_android TEXT, wallet_ios TEXT, wallet_sources TEXT, wallet_status TEXT NOT NULL,
+  wallet_signup TEXT, wallet_login TEXT, wallet_methods_sources TEXT
 );\n`;
   const inserts = COUNTRIES.map(flat).map((r) =>
     `INSERT INTO countries VALUES (${Object.entries(r).map(([k, v]) => (k.endsWith("status") ? `'${v}'` : q(String(v ?? "")))).join(", ")});`).join("\n");

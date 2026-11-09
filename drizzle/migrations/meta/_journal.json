@@ -15,6 +15,13 @@
       "when": 1794255430973,
       "tag": "0001_countries_import_staging",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794256517178,
+      "tag": "0002_countries_methods_staging",
+      "breakpoints": true
     }
   ]
 }

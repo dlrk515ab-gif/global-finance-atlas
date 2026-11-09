@@ -68,6 +68,27 @@ export type Database = {
         }
         Relationships: []
       }
+      countries_methods_import: {
+        Row: {
+          code: string
+          created_at: string
+          kind: string
+          patch: Json
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          kind: string
+          patch: Json
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          kind?: string
+          patch?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

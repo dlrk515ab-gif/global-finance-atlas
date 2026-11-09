@@ -180,13 +180,32 @@ function EntityBlock({ title, e }: { title: string; e: Entity }) {
       <Field k="تطبيق Android" v={e.apps.android} link /><Field k="تطبيق iOS" v={e.apps.ios} link />
       {e.note && <p className="mt-2 rounded-lg border border-border bg-muted/40 p-2 text-xs text-muted-foreground">ملاحظة: {e.note}</p>}
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        {([["فتح الحساب لأول مرة", SIGNUP_METHODS, e.signup], ["تسجيل الدخول اليومي", LOGIN_METHODS, e.login]] as const).map(([t, ms, map]) => (
-          <div key={t} className="rounded-xl border border-border p-3">
+        {([["فتح الحساب لأول مرة", SIGNUP_METHODS, e.signup, e.signupEvidence], ["تسجيل الدخول اليومي", LOGIN_METHODS, e.login, e.loginEvidence]] as const).map(([t, ms, map, ev]) => (
+          <div key={t} className="rounded-xl border border-border p-3" data-testid={t === "فتح الحساب لأول مرة" ? "signup-box" : "login-box"}>
             <div className="mb-2 text-sm font-medium">{t}</div>
-            {ms.map((m) => (<div key={m} className="flex justify-between py-1 text-sm"><span>{m}</span><Badge s={map[m] ?? "unavailable"} /></div>))}
+            {ms.map((m) => (
+              <div key={m} className="border-b border-border/50 py-1.5 text-sm last:border-0">
+                <div className="flex justify-between gap-2"><span>{m}</span><Badge s={map[m] ?? "unavailable"} /></div>
+                {ev[m] && (
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    <q className="italic">{ev[m].quote}</q>{" "}
+                    <a href={ev[m].url} target="_blank" rel="noreferrer" className="text-primary">المصدر ↗</a>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         ))}
       </div>
+      {e.name && (
+        <p className="mt-2 text-xs text-muted-foreground">
+          {e.methodsCheckedAt
+            ? <>فُحصت طرق التسجيل والدخول في {e.methodsCheckedAt} من {e.methodsSources.length} مصدر رسمي{e.methodsSources.length > 0 && ": "}
+                {e.methodsSources.map((u, i) => <a key={u} href={u} target="_blank" rel="noreferrer" className="ms-1 text-primary">[{i + 1}]</a>)}.
+                {" "}«يحتاج مراجعة» يعني أن المصادر الرسمية التي فُحصت لا تذكر هذه الطريقة صراحةً.</>
+            : "لم تُفحص طرق التسجيل والدخول بعد."}
+        </p>
+      )}
       {e.sources.length > 0 && <div className="mt-2 text-xs text-muted-foreground">المصادر: {e.sources.map((u) => <a key={u} href={u} target="_blank" rel="noreferrer" className="ms-2 text-primary">{u}</a>)}</div>}
     </section>
   );
