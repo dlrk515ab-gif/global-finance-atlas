@@ -24,7 +24,7 @@ describe("signup/login methods", () => {
     }));
     expect(c.bank.signup["رقم الهاتف"]).toBe("verified");
     expect(c.bank.signup["البريد الإلكتروني"]).toBe("review");
-    expect(c.bank.signupEvidence["رقم الهاتف"].url).toBe("https://www.bancobai.ao/x");
+    expect(c.bank.signupEvidence["رقم الهاتف"]?.url).toBe("https://www.bancobai.ao/x");
   });
 
   it("marks methods unavailable when there is no bank at all", () => {
