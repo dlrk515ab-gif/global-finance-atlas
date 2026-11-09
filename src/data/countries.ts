@@ -22,6 +22,9 @@ export interface Entity {
   facebook: string | null;
   social: { instagram: string | null; x: string | null; linkedin: string | null };
   ownerType?: "bank" | "telecom" | "independent" | null;
+  apps: { android: string | null; ios: string | null };
+  /** سبب ترك حقول فارغة أو ملاحظات التحقق */
+  note: string | null;
   status: Status;
   sources: string[];
   signup: MethodMap;
@@ -32,6 +35,7 @@ export interface Country { code: string; nameAr: string; nameEn: string; contine
 const empty = (): Entity => ({
   name: null, officialName: null, logo: null, website: null, facebook: null,
   social: { instagram: null, x: null, linkedin: null }, ownerType: null,
+  apps: { android: null, ios: null }, note: null,
   status: "unavailable", sources: [],
   signup: Object.fromEntries(SIGNUP_METHODS.map((m) => [m, "unavailable"])),
   login: Object.fromEntries(LOGIN_METHODS.map((m) => [m, "unavailable"])),
@@ -63,6 +67,8 @@ const fill = (raw: unknown): Entity => {
   return {
     ...base, ...r,
     social: { ...base.social, ...(r.social ?? {}) },
+    apps: { ...base.apps, ...(r.apps ?? {}) },
+    note: r.note ?? null,
     sources: r.sources ?? [],
     status: r.status ?? "unavailable",
     signup: { ...Object.fromEntries(SIGNUP_METHODS.map((m) => [m, ms])), ...(r.signup ?? {}) },

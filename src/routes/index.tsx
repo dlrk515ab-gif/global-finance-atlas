@@ -177,6 +177,8 @@ function EntityBlock({ title, e }: { title: string; e: Entity }) {
       <Field k="الموقع الرسمي" v={e.website} link /><Field k="Facebook" v={e.facebook} link />
       {e.ownerType && <Field k="نوع الجهة" v={{ bank: "بنك", telecom: "شركة اتصالات", independent: "مستقلة" }[e.ownerType]} />}
       <Field k="Instagram" v={e.social.instagram} link /><Field k="X" v={e.social.x} link />
+      <Field k="تطبيق Android" v={e.apps.android} link /><Field k="تطبيق iOS" v={e.apps.ios} link />
+      {e.note && <p className="mt-2 rounded-lg border border-border bg-muted/40 p-2 text-xs text-muted-foreground">ملاحظة: {e.note}</p>}
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         {([["فتح الحساب لأول مرة", SIGNUP_METHODS, e.signup], ["تسجيل الدخول اليومي", LOGIN_METHODS, e.login]] as const).map(([t, ms, map]) => (
           <div key={t} className="rounded-xl border border-border p-3">

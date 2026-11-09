@@ -44,6 +44,30 @@ export type Database = {
         }
         Relationships: []
       }
+      countries_import: {
+        Row: {
+          bank: Json
+          batch: string
+          code: string
+          created_at: string
+          wallet: Json
+        }
+        Insert: {
+          bank: Json
+          batch?: string
+          code: string
+          created_at?: string
+          wallet: Json
+        }
+        Update: {
+          bank?: Json
+          batch?: string
+          code?: string
+          created_at?: string
+          wallet?: Json
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
