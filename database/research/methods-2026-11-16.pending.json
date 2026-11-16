@@ -1,0 +1,74 @@
+{
+  "state": "pending-database-availability",
+  "entities": [
+    {
+      "code": "KE",
+      "kind": "wallet",
+      "expectedName": "M-PESA",
+      "patch": {
+        "signup": {
+          "رقم الهاتف": "verified",
+          "رقم الهوية الوطنية": "verified",
+          "التحقق عبر SMS/OTP": "verified",
+          "إنشاء PIN أو كلمة مرور": "verified"
+        },
+        "login": {
+          "البصمة/التعرف على الوجه": "verified"
+        },
+        "signupEvidence": {
+          "رقم الهاتف": {
+            "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+            "quote": "A Safaricom SIM card"
+          },
+          "رقم الهوية الوطنية": {
+            "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+            "quote": "Enter the ID number used to register your SIM, then confirm your details."
+          },
+          "التحقق عبر SMS/OTP": {
+            "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+            "quote": "You will receive an SMS confirming registration, with a 4-digit start PIN."
+          },
+          "إنشاء PIN أو كلمة مرور": {
+            "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+            "quote": "Create your own secret 4-digit M-PESA PIN and confirm it."
+          }
+        },
+        "loginEvidence": {
+          "البصمة/التعرف على الوجه": {
+            "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/manage-your-account",
+            "quote": "Log in to M-PESA using your PIN or your chosen biometrics i.e., fingerprint, face unlock."
+          }
+        },
+        "methodsCheckedAt": "2026-11-16",
+        "methodsSources": [
+          "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+          "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/manage-your-account"
+        ]
+      },
+      "scopeNote": "التسجيل عبر USSD أو وكيل؛ الدخول عبر تطبيق M-PESA، ولا يُنسب هذا الدليل إلى تطبيق mySafaricom."
+    },
+    {
+      "code": "SA",
+      "kind": "bank",
+      "expectedName": "مصرف الراجحي",
+      "patch": {
+        "signup": {
+          "رقم الهوية الوطنية": "verified"
+        },
+        "login": {},
+        "signupEvidence": {
+          "رقم الهوية الوطنية": {
+            "url": "https://alrajhibank.com.sa/en/Personal/Accounts/Current-Account",
+            "quote": "Copy of valid ID (National ID/Iqama)"
+          }
+        },
+        "loginEvidence": {},
+        "methodsCheckedAt": "2026-11-16",
+        "methodsSources": [
+          "https://alrajhibank.com.sa/en/Personal/Accounts/Current-Account"
+        ]
+      },
+      "scopeNote": "المصدر يوثق فتح الحساب الجاري؛ لا يقدم دليلاً على طرق الدخول اليومي."
+    }
+  ]
+}

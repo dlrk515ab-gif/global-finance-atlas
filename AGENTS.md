@@ -14,3 +14,4 @@
 - New data batches are loaded into `public.countries_import` (staging, no app access) via psql COPY, then merged into `countries` with one UPDATE that only fills empty rows. Why: large JSONB batches are too big to paste as SQL.
 - Facebook/social/app links come only from links published on the entity's own official site. Why: avoids unofficial pages.
 - `public/downloads/project-source.zip` is a prebuilt snapshot; regenerate it (excluding node_modules, .git, .env) after changes.
+- Pending method research belongs in `database/research` with source passages, entity names and unapplied status; never render it as live data until a guarded database update and read-back succeed. Why: a service outage must not turn uncommitted research into apparent verification.

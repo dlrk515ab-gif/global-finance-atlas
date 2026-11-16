@@ -1,0 +1,44 @@
+[
+  {
+    "code": "KE",
+    "kind": "wallet",
+    "method": "رقم الهاتف",
+    "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+    "quote": "A Safaricom SIM card"
+  },
+  {
+    "code": "KE",
+    "kind": "wallet",
+    "method": "رقم الهوية الوطنية",
+    "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+    "quote": "Enter the ID number used to register your SIM, then confirm your details."
+  },
+  {
+    "code": "KE",
+    "kind": "wallet",
+    "method": "التحقق عبر SMS/OTP",
+    "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+    "quote": "You will receive an SMS confirming registration, with a 4-digit start PIN."
+  },
+  {
+    "code": "KE",
+    "kind": "wallet",
+    "method": "إنشاء PIN أو كلمة مرور",
+    "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/getting-started/register-for-m-pesa",
+    "quote": "Create your own secret 4-digit M-PESA PIN and confirm it."
+  },
+  {
+    "code": "KE",
+    "kind": "wallet",
+    "method": "البصمة/التعرف على الوجه",
+    "url": "https://www.safaricom.co.ke/main-mpesa/m-pesa-for-you/manage-your-account",
+    "quote": "Log in to M-PESA using your PIN or your chosen biometrics i.e., fingerprint, face unlock."
+  },
+  {
+    "code": "SA",
+    "kind": "bank",
+    "method": "رقم الهوية الوطنية",
+    "url": "https://alrajhibank.com.sa/en/Personal/Accounts/Current-Account",
+    "quote": "Copy of valid ID (National ID/Iqama)"
+  }
+]
